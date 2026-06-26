@@ -2,19 +2,202 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gemini AI Chatbot</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DriveWise AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Gemini AI Chatbot</h1>
-    <div id="chat-box" class="chat-box"></div>
-    <form id="chat-form">
-      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required />
-      <button type="submit">Send</button>
-    </form>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-logo">DW</div>
+        <div>
+          <p class="brand-label">DriveWise AI</p>
+          <p class="brand-tag">Drive Smarter. Own Better.</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <nav class="nav-links">
+          <a href="#home" data-i18n="home">Home</a>
+          <a href="#features" data-i18n="features">Features</a>
+          <a href="#chat" data-i18n="chat">AI Chat</a>
+          <a href="#about" data-i18n="about">About</a>
+        </nav>
+        <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Toggle language">ID</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow" data-i18n="heroEyebrow">AI Automotive Assistant</p>
+          <h1 data-i18n="heroTitle">Drive Smarter.<br />Own Better.</h1>
+          <p class="hero-subtitle" data-i18n="heroSubtitle">Your intelligent automotive assistant that helps you buy, sell, compare, finance, maintain, and modify vehicles using AI.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#chat" data-i18n="heroStart">Start Consultation</a>
+            <a class="button outline" href="#features" data-i18n="heroLearn">Learn More</a>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="hero-card glass-card hero-summary">
+            <div class="hero-card-tag" data-i18n="heroTag">Premium AI Assistant</div>
+            <h2 data-i18n="heroPanelTitle">DriveWise AI</h2>
+            <p data-i18n="heroPanelText">Get faster vehicle recommendations, financing guidance, and maintenance advice in one place.</p>
+            <div class="hero-stats">
+              <div>
+                <span>98%</span>
+                <p data-i18n="statAccuracy">Accuracy</p>
+              </div>
+              <div>
+                <span>1.4s</span>
+                <p data-i18n="statResponse">Response time</p>
+              </div>
+              <div>
+                <span>24/7</span>
+                <p data-i18n="statSupport">Support</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features-section" id="features">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="coreFeatures">Core Features</p>
+          <h2 data-i18n="coreTitle">Everything you need for smarter vehicle ownership.</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card glass-card">
+            <p class="feature-icon">🚗</p>
+            <h3 data-i18n="feature1title">Buy Vehicle</h3>
+            <p data-i18n="feature1desc">Get tailored recommendations for cars and motorcycles.</p>
+          </article>
+          <article class="feature-card glass-card">
+            <p class="feature-icon">🏍</p>
+            <h3 data-i18n="feature2title">Sell Vehicle</h3>
+            <p data-i18n="feature2desc">Estimate pricing and optimize your sale strategy.</p>
+          </article>
+          <article class="feature-card glass-card">
+            <p class="feature-icon">💰</p>
+            <h3 data-i18n="feature3title">Finance Calculator</h3>
+            <p data-i18n="feature3desc">Simulate installments, DP, tenor, and affordability.</p>
+          </article>
+          <article class="feature-card glass-card">
+            <p class="feature-icon">⚖</p>
+            <h3 data-i18n="feature4title">Compare Vehicle</h3>
+            <p data-i18n="feature4desc">Evaluate options side by side with intelligent analysis.</p>
+          </article>
+          <article class="feature-card glass-card">
+            <p class="feature-icon">🔧</p>
+            <h3 data-i18n="feature5title">Maintenance & Modification</h3>
+            <p data-i18n="feature5desc">Receive practical advice for upkeep and upgrades.</p>
+          </article>
+          <article class="feature-card glass-card">
+            <p class="feature-icon">🤖</p>
+            <h3 data-i18n="feature6title">AI Automotive Chat</h3>
+            <p data-i18n="feature6desc">Talk to an expert assistant for any vehicle question.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="parts-section">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="partsEyebrow">Autoparts</p>
+          <h2 data-i18n="partsTitle">Automotive parts and systems</h2>
+        </div>
+        <div class="parts-grid">
+          <article class="part-card glass-card">
+            <span class="part-icon">⚙️</span>
+            <h4 data-i18n="part1title">Engine</h4>
+            <p data-i18n="part1desc">Understand key components that power your ride.</p>
+          </article>
+          <article class="part-card glass-card">
+            <span class="part-icon">🛞</span>
+            <h4 data-i18n="part2title">Tires</h4>
+            <p data-i18n="part2desc">Choose the right tires for grip and comfort.</p>
+          </article>
+          <article class="part-card glass-card">
+            <span class="part-icon">🛑</span>
+            <h4 data-i18n="part3title">Brakes</h4>
+            <p data-i18n="part3desc">Keep stopping power reliable and safe.</p>
+          </article>
+          <article class="part-card glass-card">
+            <span class="part-icon">🔋</span>
+            <h4 data-i18n="part4title">Battery</h4>
+            <p data-i18n="part4desc">Monitor energy and electrical health.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="chat-section" id="chat">
+        <div class="chat-header glass-card">
+          <div>
+            <p class="eyebrow" data-i18n="chatHeader">AI Chat</p>
+            <h2 data-i18n="chatTitle">Talk to DriveWise AI</h2>
+          </div>
+          <p class="chat-description" data-i18n="chatDescription">Ask about buying, selling, financing, maintenance, or vehicle recommendations. The assistant is ready.</p>
+        </div>
+
+        <div id="chat-shell-placeholder"></div>
+        <div class="chat-shell glass-card" id="chat-shell">
+          <div class="chat-window" id="chat-box"></div>
+          <div class="suggestions" aria-label="Suggested prompts">
+            <button type="button" class="suggestion-button" data-i18n="suggest1" data-suggest="suggest1">Recommend a motorcycle under Rp35 million</button>
+            <button type="button" class="suggestion-button" data-i18n="suggest2" data-suggest="suggest2">Compare Honda PCX and Yamaha NMAX</button>
+            <button type="button" class="suggestion-button" data-i18n="suggest3" data-suggest="suggest3">Calculate installment for a Rp250 million car</button>
+            <button type="button" class="suggestion-button" data-i18n="suggest4" data-suggest="suggest4">Estimate my vehicle selling price</button>
+            <button type="button" class="suggestion-button" data-i18n="suggest5" data-suggest="suggest5">Recommend the best engine oil</button>
+          </div>
+          <form id="chat-form" class="chat-form">
+            <textarea id="user-input" rows="1" placeholder="Ask DriveWise AI anything..." autocomplete="off" required data-i18n="userPlaceholder"></textarea>
+            <button type="submit" class="button primary" data-i18n="sendButton">Send</button>
+          </form>
+          <p class="form-help" data-i18n="formHelp">Press Enter to send, Shift + Enter for a new line.</p>
+        </div>
+      </section>
+
+      <section class="about-section" id="about">
+        <div class="about-card glass-card">
+          <h2 data-i18n="aboutTitle">Built for premium automotive decisions.</h2>
+          <p data-i18n="aboutText">DriveWise AI helps you make intelligent choices across buying, selling, financing, maintenance, modifications, and spare part recommendations—all in a modern conversational experience.</p>
+        </div>
+      </section>
+    </main>
   </div>
+
+  <button id="chat-float-button" class="floating-chat-button" type="button" data-i18n="floatButton">Chat with DriveWise</button>
+
+  <div id="chat-widget" class="chat-widget hidden" aria-hidden="true">
+    <div class="chat-widget-panel glass-card">
+      <div class="chat-widget-header">
+        <div>
+          <p class="eyebrow" data-i18n="widgetTitle">DriveWise Mini Chat</p>
+        </div>
+        <div class="widget-actions">
+          <button type="button" id="chat-widget-full" class="widget-button" data-i18n="widgetFull">Full</button>
+          <button type="button" id="chat-widget-minimize" class="widget-button" data-i18n="widgetMinimize">–</button>
+        </div>
+      </div>
+      <div id="chat-widget-body" class="chat-widget-body"></div>
+    </div>
+  </div>
+
+  <div id="chat-overlay" class="chat-overlay hidden" aria-hidden="true">
+    <div class="chat-overlay-panel glass-card">
+      <div class="overlay-header">
+        <div>
+          <p class="overlay-title" data-i18n="overlayTitle">DriveWise Chat</p>
+          <p class="overlay-subtitle" data-i18n="overlaySubtitle">Continue your current conversation in full screen.</p>
+        </div>
+        <button id="chat-overlay-close" class="overlay-close" aria-label="Close chat">×</button>
+      </div>
+      <div id="chat-overlay-body"></div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

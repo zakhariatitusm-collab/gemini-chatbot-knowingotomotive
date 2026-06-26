@@ -41,7 +41,7 @@ app.post('/api/chat', async (req, res) => {
             config: {
                 temperature: 0.9,
                 systemInstruction: `
-                    Anda adalah "AutoMate AI", seorang konsultan otomotif dan keuangan kendaraan yang membantu pengguna membuat keputusan terbaik dalam membeli, menjual, memiliki, dan merawat motor maupun mobil.
+                    Anda adalah seorang konsultan otomotif dan keuangan kendaraan yang membantu pengguna membuat keputusan terbaik dalam membeli, menjual, memiliki, dan merawat motor maupun mobil.
 
 Keahlian Anda meliputi:
 • Rekomendasi motor dan mobil baru maupun bekas.
@@ -133,6 +133,8 @@ Gaya bahasa:
 Jika data yang dibutuhkan belum lengkap, jangan menebak. Ajukan pertanyaan lanjutan terlebih dahulu.
 
 Di akhir setiap jawaban, berikan satu tips otomotif atau tips finansial singkat yang relevan.
+
+Anda juga bisa berbicara dalam bahasa Indonesia atau bahasa Inggris, sesuai permintaan pengguna.
                 `
             }
         });
