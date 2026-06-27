@@ -3,6 +3,7 @@ const input = document.getElementById('user-input');
 const chatBox = document.getElementById('chat-box');
 const suggestionButtons = document.querySelectorAll('.suggestion-button');
 const langToggle = document.getElementById('lang-toggle');
+const aiConsultButton = document.getElementById('calc-consult-ai');
 const chatFontSlider = document.getElementById('chat-font-slider');
 const chatFontSizeLabel = document.getElementById('chat-font-size-label');
 
@@ -185,7 +186,10 @@ const createMessage = (role, content, status = 'normal') => {
 
   const avatar = document.createElement('div');
   avatar.classList.add('avatar', role);
-  avatar.textContent = role === 'user' ? 'U' : 'AI';
+  // set a concise initial / brand for the avatar and add accessible labels
+  avatar.textContent = role === 'user' ? 'Me' : 'DW';
+  avatar.setAttribute('aria-label', role === 'user' ? (currentLang === 'id' ? 'Anda' : 'You') : 'DriveWise AI');
+  avatar.title = role === 'user' ? (currentLang === 'id' ? 'Pengguna' : 'User') : 'DriveWise AI';
 
   const contentWrap = document.createElement('div');
   contentWrap.classList.add('message-content');
@@ -203,6 +207,9 @@ const createMessage = (role, content, status = 'normal') => {
   row.classList.add('message-row');
   row.appendChild(avatar);
   row.appendChild(contentWrap);
+
+  // expose role on the element for easier styling/selection
+  messageElement.dataset.role = role;
 
   messageElement.appendChild(row);
   messageElement.appendChild(meta);
@@ -265,16 +272,94 @@ const suggestionTexts = {
 };
 
 const formatRupiah = (number) => {
+  if (number === '' || Number.isNaN(Number(number))) {
+    return 'Rp 0';
+  }
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(number);
+  }).format(Number(number));
+};
+
+const formatPriceInput = () => {
+  const priceInput = document.getElementById('calc-price');
+  if (!priceInput) return;
+  const digits = priceInput.value.replace(/[^0-9]/g, '');
+  const formatted = digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  priceInput.value = formatted;
+};
+
+const parseNumericValue = (value) => {
+  const parsed = parseFloat(value.toString().replace(/\./g, ''));
+  return Number.isNaN(parsed) ? 0 : parsed;
+};
+
+const createCreditConsultationPrompt = (price, dpPercent, ratePercent, years) => {
+  const formattedPrice = formatRupiah(price);
+  if (currentLang === 'id') {
+    return `Saya ingin konsultasi pembiayaan kendaraan dengan harga ${formattedPrice}, DP ${dpPercent}%, bunga ${ratePercent}% per tahun, dan tenor ${years} tahun. Tolong berikan rekomendasi angsuran, strategi DP, dan saran pembiayaan yang sesuai.`;
+  }
+
+  return `I want a vehicle financing consultation for a vehicle priced at ${formattedPrice}, with a down payment of ${dpPercent}%, an annual interest rate of ${ratePercent}%, and a tenor of ${years} years. Please provide installment recommendations, DP strategy, and financing advice.`;
+};
+
+const sendChatMessage = async (message) => {
+  if (!message || !message.trim()) return;
+
+  hideSuggestions();
+  chatBox.appendChild(createMessage('user', message));
+  const thinkingMessage = createMessage('bot', '', 'typing');
+  chatBox.appendChild(thinkingMessage);
+  chatBox.scrollTop = chatBox.scrollHeight;
+  input.value = '';
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        conversation: [
+          { role: 'user', text: message },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    const resultText = data && typeof data.result === 'string' ? data.result.trim() : '';
+
+    updateMessageText(thinkingMessage, resultText || 'Sorry, no response received.');
+  } catch (error) {
+    console.error('Chat request failed:', error);
+    updateMessageText(thinkingMessage, 'Failed to get response from server.');
+  }
+};
+
+const handleConsultationClick = () => {
+  const price = parseNumericValue(document.getElementById('calc-price').value);
+  const dpPercent = parseFloat(document.getElementById('calc-dp').value);
+  const ratePercent = parseFloat(document.getElementById('calc-rate').value);
+  const years = parseInt(document.getElementById('calc-tenor').value, 10);
+
+  window.location.hash = '#chat';
+
+  if (!price || Number.isNaN(dpPercent) || Number.isNaN(ratePercent) || Number.isNaN(years)) {
+    return;
+  }
+
+  const consultationPrompt = createCreditConsultationPrompt(price, dpPercent, ratePercent, years);
+  sendChatMessage(consultationPrompt);
 };
 
 function hitungKredit() {
-  const price = parseFloat(document.getElementById('calc-price').value);
+  const price = parseNumericValue(document.getElementById('calc-price').value);
   const dpPercent = parseFloat(document.getElementById('calc-dp').value);
   const ratePercent = parseFloat(document.getElementById('calc-rate').value);
   const years = parseInt(document.getElementById('calc-tenor').value, 10);
@@ -436,40 +521,10 @@ form.addEventListener('submit', async (event) => {
     return;
   }
 
-  hideSuggestions();
-  chatBox.appendChild(createMessage('user', userMessage));
-  input.value = '';
-
-  const thinkingMessage = createMessage('bot', '', 'typing');
-  chatBox.appendChild(thinkingMessage);
-  chatBox.scrollTop = chatBox.scrollHeight;
-
-  try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        conversation: [
-          { role: 'user', text: userMessage },
-        ],
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Server returned ${response.status}`);
-    }
-
-    const data = await response.json();
-    const resultText = data && typeof data.result === 'string' ? data.result.trim() : '';
-
-    updateMessageText(thinkingMessage, resultText || 'Sorry, no response received.');
-  } catch (error) {
-    console.error('Chat request failed:', error);
-    updateMessageText(thinkingMessage, 'Failed to get response from server.');
-  }
+  sendChatMessage(userMessage);
 });
+
+aiConsultButton?.addEventListener('click', handleConsultationClick);
 
 input.addEventListener('keydown', (event) => {
   if (event.key === 'Enter' && !event.shiftKey) {

@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DriveWise AI | Drive Smarter. Own Better.</title>
-  <meta name="theme-color" content="#0f172a" />
-  <link rel="icon" type="image/png" sizes="any" href="/LogoDW.png" />
-  <link rel="shortcut icon" type="image/png" href="/LogoDW.png" />
+  <link rel="icon" type="image/png" href="LogoDW.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -117,7 +115,7 @@
               <label data-i18n="calcPriceLabel">Harga Kendaraan (Rp)</label>
               <div class="input-prefix">
                 <span>Rp</span>
-                <input type="number" id="calc-price" placeholder="Contoh: 250000000" data-i18n="calcPricePlaceholder" oninput="hitungKredit()" />
+                <input type="text" id="calc-price" inputmode="numeric" placeholder="Contoh: 250000000" data-i18n="calcPricePlaceholder" oninput="formatPriceInput(); hitungKredit();" />
               </div>
             </div>
             <div class="form-group">
@@ -163,7 +161,7 @@
               <div><span data-i18n="principalLabel">Pokok Hutang</span><strong id="result-principal">Rp 0</strong></div>
               <div><span data-i18n="interestLabel">Estimasi Total Bunga</span><strong id="result-interest">Rp 0</strong></div>
             </div>
-            <button type="button" class="button primary calculator-action" onclick="document.getElementById('user-input').focus(); window.location.href='#chat';" data-i18n="calcButton">Konsultasi Detail via AI</button>
+            <button type="button" id="calc-consult-ai" class="button primary calculator-action" data-i18n="calcButton">Konsultasi Detail via AI</button>
           </div>
         </div>
       </section>
@@ -187,15 +185,14 @@
             <button type="button" class="suggestion-button" data-i18n="suggest4" data-suggest="suggest4">Estimate my vehicle selling price</button>
             <button type="button" class="suggestion-button" data-i18n="suggest5" data-suggest="suggest5">Recommend the best engine oil</button>
           </div>
-          <div class="chat-font-control">
-            <label for="chat-font-slider" id="chat-font-size-label">Chat size: 11px</label>
-            <input id="chat-font-slider" type="range" min="8" max="16" value="11" step="1" aria-label="Adjust chat font size" />
-          </div>
           <form id="chat-form" class="chat-form">
             <textarea id="user-input" rows="1" placeholder="Ask DriveWise AI anything..." autocomplete="off" required data-i18n="userPlaceholder"></textarea>
             <button type="submit" class="button primary" data-i18n="sendButton">Send</button>
           </form>
-          <p class="form-help" data-i18n="formHelp">Press Enter to send, Shift + Enter for a new line.</p>
+          <div class="chat-font-control">
+            <label for="chat-font-slider" id="chat-font-size-label">Chat size: 11px</label>
+            <input id="chat-font-slider" type="range" min="8" max="16" value="11" step="1" aria-label="Adjust chat font size" />
+          </div>
         </div>
       </section>
 
