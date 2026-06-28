@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DriveWise AI — Chat</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body.chat-full { min-height: 100vh; }
+    .chat-full-shell { max-width: 980px; height: 100%; margin: 0 auto; padding: 20px 20px 12px; display: flex; flex-direction: column; }
+    .chat-full-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+    .chat-back { background:transparent; border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:10px; cursor:pointer; }
+    .chat-full-title { font-size:1.5rem; margin:0; }
+    .chat-shell { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .chat-shell .message { max-width: 100%; border-radius: 0; background: transparent; border: none; padding: 8px 0; box-shadow: none; }
+    .chat-shell .message .message-content { padding: 10px 12px; background: rgba(255,255,255,0.02); border-radius: 8px; display: inline-block; }
+    .chat-shell .message.user .message-content { background: linear-gradient(135deg, rgba(37,99,235,0.9), rgba(56,189,248,0.2)); color: #e2e8f0; }
+    .chat-shell .message-meta { display:none; }
+    .chat-window { flex: 1; min-height: 0; overflow-y: auto; padding-right: 0; }
+    .chat-form { margin-top: 12px; }
+  </style>
+</head>
+<body class="chat-full">
+  <div class="page-shell chat-full-shell">
+    <div class="chat-full-header">
+      <button class="chat-back" id="chat-back">← Back</button>
+      <h2 class="chat-full-title">DriveWise AI</h2>
+    </div>
+
+    <div class="chat-shell glass-card" id="chat-shell" style="--chat-font-size: 11px;">
+      <div class="chat-window" id="chat-box"></div>
+      <div class="suggestions" aria-label="Suggested prompts">
+        <button type="button" class="suggestion-button" data-i18n="suggest1" data-suggest="suggest1">Recommend a motorcycle under Rp35 million</button>
+        <button type="button" class="suggestion-button" data-i18n="suggest2" data-suggest="suggest2">Compare Honda PCX and Yamaha NMAX</button>
+        <button type="button" class="suggestion-button" data-i18n="suggest3" data-suggest="suggest3">Calculate installment for a Rp250 million car</button>
+        <button type="button" class="suggestion-button" data-i18n="suggest4" data-suggest="suggest4">Estimate my vehicle selling price</button>
+        <button type="button" class="suggestion-button" data-i18n="suggest5" data-suggest="suggest5">Recommend the best engine oil</button>
+      </div>
+
+      <form id="chat-form" class="chat-form">
+        <textarea id="user-input" rows="1" placeholder="Ask DriveWise AI anything..." autocomplete="off" required data-i18n="userPlaceholder"></textarea>
+        <div style="display:flex; gap:8px; align-items:center; margin-top:8px;">
+          <button type="submit" class="button primary" data-i18n="sendButton">Send</button>
+          <button type="button" id="clear-chat" class="button outline">Clear</button>
+        </div>
+      </form>
+
+      <div class="chat-font-control" style="margin-top:12px; display:flex; align-items:center; gap:12px;">
+        <label for="chat-font-slider" id="chat-font-size-label">Chat size: 11px</label>
+        <input id="chat-font-slider" type="range" min="8" max="20" value="11" step="1" aria-label="Adjust chat font size" />
+      </div>
+
+    </div>
+  </div>
+
+  <script src="chat-full.js"></script>
+</body>
+</html>

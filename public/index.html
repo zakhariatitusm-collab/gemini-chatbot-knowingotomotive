@@ -176,7 +176,7 @@
         </div>
 
         <div id="chat-shell-placeholder"></div>
-        <div class="chat-shell glass-card" id="chat-shell">
+        <div class="chat-shell glass-card" id="chat-shell" style="--chat-font-size: 11px;">
           <div class="chat-window" id="chat-box"></div>
           <div class="suggestions" aria-label="Suggested prompts">
             <button type="button" class="suggestion-button" data-i18n="suggest1" data-suggest="suggest1">Recommend a motorcycle under Rp35 million</button>
@@ -192,6 +192,9 @@
           <div class="chat-font-control">
             <label for="chat-font-slider" id="chat-font-size-label">Chat size: 11px</label>
             <input id="chat-font-slider" type="range" min="8" max="16" value="11" step="1" aria-label="Adjust chat font size" />
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px;">
+            <button id="to-fullscreen" class="button outline">Change to Fullscreen</button>
           </div>
         </div>
       </section>

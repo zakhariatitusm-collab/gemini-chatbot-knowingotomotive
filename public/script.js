@@ -88,6 +88,7 @@ const translations = {
     principalLabel: 'Principal',
     interestLabel: 'Estimated Total Interest',
     calcButton: 'Consult Details via AI',
+    consultMissingPrice: 'Please enter the vehicle price and set up the credit parameters before consulting.',
     carLabel: 'Car',
     bikeLabel: 'Motor',
   },
@@ -171,6 +172,7 @@ const translations = {
     principalLabel: 'Pokok Hutang',
     interestLabel: 'Estimasi Total Bunga',
     calcButton: 'Konsultasi Detail via AI',
+    consultMissingPrice: 'Silakan masukkan harga kendaraan dan tentukan parameter perhitungan kredit sebelum berkonsultasi.',
     carLabel: 'Mobil',
     bikeLabel: 'Motor',
   },
@@ -415,14 +417,20 @@ const handleConsultationClick = () => {
   const ratePercent = parseFloat(document.getElementById('calc-rate').value);
   const years = parseInt(document.getElementById('calc-tenor').value, 10);
 
-  window.location.hash = '#chat';
-
   if (!price || Number.isNaN(dpPercent) || Number.isNaN(ratePercent) || Number.isNaN(years)) {
+    const msg = translations[currentLang]?.consultMissingPrice || 'Please enter price and parameters.';
+    alert(msg);
     return;
   }
 
   const consultationPrompt = createCreditConsultationPrompt(price, dpPercent, ratePercent, years);
-  sendChatMessage(consultationPrompt);
+  try {
+    localStorage.setItem('drivewise-chat-pending', consultationPrompt);
+  } catch (e) {
+    console.warn('Unable to persist pending prompt', e);
+  }
+
+  window.location.href = 'chat.html';
 };
 
 function hitungKredit() {
@@ -571,7 +579,9 @@ const closeChatOverlay = () => {
 
 langToggle?.addEventListener('click', toggleLanguage);
 chatFloatButton?.addEventListener('click', toggleWidget);
-chatWidgetFull?.addEventListener('click', openChatOverlay);
+chatWidgetFull?.addEventListener('click', () => {
+  window.location.href = 'chat.html';
+});
 chatWidgetMinimize?.addEventListener('click', minimizeWidget);
 chatOverlayClose?.addEventListener('click', closeChatOverlay);
 chatOverlay?.addEventListener('click', (event) => {
@@ -600,7 +610,15 @@ input.addEventListener('keydown', (event) => {
   }
 });
 
-input.addEventListener('input', () => autoResize(input));
+input.addEventListener('input', () => {
+  autoResize(input);
+  const suggestions = document.querySelectorAll('.suggestions');
+  if (input.value && input.value.trim().length > 0) {
+    suggestions.forEach((el) => (el.style.display = 'none'));
+  } else {
+    suggestions.forEach((el) => (el.style.display = ''));
+  }
+});
 
 chatFontSlider?.addEventListener('input', (event) => {
   updateChatFontSize(event.target.value);
@@ -615,12 +633,19 @@ window.addEventListener('load', () => {
 suggestionButtons.forEach((button) => {
   button.addEventListener('click', () => {
     input.value = button.textContent;
+    // hide suggestions after selecting
+    document.querySelectorAll('.suggestions').forEach((el) => (el.style.display = 'none'));
     input.focus();
   });
 });
 
 updateLocale();
 loadConversationHistory();
+
+const toFullscreenBtn = document.getElementById('to-fullscreen');
+toFullscreenBtn?.addEventListener('click', () => {
+  window.location.href = 'chat.html';
+});
 
 function updateMessageText(messageElement, text) {
   if (!messageElement) {
