@@ -167,35 +167,13 @@
       </section>
 
       <section class="chat-section" id="chat">
-        <div class="chat-header glass-card">
+        <div class="chat-header glass-card" style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; padding:40px 24px;">
           <div>
             <p class="eyebrow" data-i18n="chatHeader">AI Chat</p>
             <h2 data-i18n="chatTitle">Talk to DriveWise AI</h2>
           </div>
           <p class="chat-description" data-i18n="chatDescription">Ask about buying, selling, financing, maintenance, or vehicle recommendations. The assistant is ready.</p>
-        </div>
-
-        <div id="chat-shell-placeholder"></div>
-        <div class="chat-shell glass-card" id="chat-shell" style="--chat-font-size: 11px;">
-          <div class="chat-window" id="chat-box"></div>
-          <div class="suggestions" aria-label="Suggested prompts">
-            <button type="button" class="suggestion-button" data-i18n="suggest1" data-suggest="suggest1">Recommend a motorcycle under Rp35 million</button>
-            <button type="button" class="suggestion-button" data-i18n="suggest2" data-suggest="suggest2">Compare Honda PCX and Yamaha NMAX</button>
-            <button type="button" class="suggestion-button" data-i18n="suggest3" data-suggest="suggest3">Calculate installment for a Rp250 million car</button>
-            <button type="button" class="suggestion-button" data-i18n="suggest4" data-suggest="suggest4">Estimate my vehicle selling price</button>
-            <button type="button" class="suggestion-button" data-i18n="suggest5" data-suggest="suggest5">Recommend the best engine oil</button>
-          </div>
-          <form id="chat-form" class="chat-form">
-            <textarea id="user-input" rows="1" placeholder="Ask DriveWise AI anything..." autocomplete="off" required data-i18n="userPlaceholder"></textarea>
-            <button type="submit" class="button primary" data-i18n="sendButton">Send</button>
-          </form>
-          <div class="chat-font-control">
-            <label for="chat-font-slider" id="chat-font-size-label">Chat size: 11px</label>
-            <input id="chat-font-slider" type="range" min="8" max="16" value="11" step="1" aria-label="Adjust chat font size" />
-          </div>
-          <div style="margin-top:12px; display:flex; gap:8px;">
-            <button id="to-fullscreen" class="button outline">Change to Fullscreen</button>
-          </div>
+          <button id="to-fullscreen" class="button primary">Go to Drivewise AI</button>
         </div>
       </section>
 
@@ -206,36 +184,6 @@
         </div>
       </section>
     </main>
-  </div>
-
-  <button id="chat-float-button" class="floating-chat-button" type="button" data-i18n="floatButton">Chat with DriveWise</button>
-
-  <div id="chat-widget" class="chat-widget hidden" aria-hidden="true">
-    <div class="chat-widget-panel glass-card">
-      <div class="chat-widget-header">
-        <div>
-          <p class="eyebrow" data-i18n="widgetTitle">DriveWise Mini Chat</p>
-        </div>
-        <div class="widget-actions">
-          <button type="button" id="chat-widget-full" class="widget-button" data-i18n="widgetFull">Full</button>
-          <button type="button" id="chat-widget-minimize" class="widget-button" data-i18n="widgetMinimize">–</button>
-        </div>
-      </div>
-      <div id="chat-widget-body" class="chat-widget-body"></div>
-    </div>
-  </div>
-
-  <div id="chat-overlay" class="chat-overlay hidden" aria-hidden="true">
-    <div class="chat-overlay-panel glass-card">
-      <div class="overlay-header">
-        <div>
-          <p class="overlay-title" data-i18n="overlayTitle">DriveWise Chat</p>
-          <p class="overlay-subtitle" data-i18n="overlaySubtitle">Continue your current conversation in full screen.</p>
-        </div>
-        <button id="chat-overlay-close" class="overlay-close" aria-label="Close chat">×</button>
-      </div>
-      <div id="chat-overlay-body"></div>
-    </div>
   </div>
 
   <script src="script.js"></script>

@@ -183,6 +183,7 @@ let currentLang = 'en';
 const formatTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 let lastOutgoingMessage = '';
 let conversationHistory = [];
+let suggestionInteractionStarted = false;
 const STORAGE_KEY = 'drivewise-chat-history';
 
 const saveConversationHistory = () => {
@@ -193,13 +194,28 @@ const saveConversationHistory = () => {
   }
 };
 
+const updateSuggestionVisibility = () => {
+  const visible = conversationHistory.length === 0 && !suggestionInteractionStarted;
+  document.querySelectorAll('.suggestions').forEach((el) => {
+    el.style.display = visible ? '' : 'none';
+  });
+};
+
 const loadConversationHistory = () => {
+  if (!chatBox) return;
+
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return;
+    if (!saved) {
+      updateSuggestionVisibility();
+      return;
+    }
 
     const parsed = JSON.parse(saved);
-    if (!Array.isArray(parsed)) return;
+    if (!Array.isArray(parsed)) {
+      updateSuggestionVisibility();
+      return;
+    }
 
     conversationHistory = parsed.filter((item) => item && typeof item.text === 'string' && ['user', 'assistant', 'model', 'bot'].includes(item.role));
 
@@ -209,6 +225,20 @@ const loadConversationHistory = () => {
   } catch (error) {
     console.warn('Unable to restore chat history:', error);
   }
+
+  updateSuggestionVisibility();
+};
+
+const escapeHtml = (text) => text
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
+const renderMessageContent = (text) => {
+  const safeText = escapeHtml(text || '');
+  return safeText.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 };
 
 const createMessage = (role, content, status = 'normal') => {
@@ -227,7 +257,7 @@ const createMessage = (role, content, status = 'normal') => {
   if (status === 'typing') {
     contentWrap.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
   } else {
-    contentWrap.textContent = content;
+    contentWrap.innerHTML = renderMessageContent(content);
   }
 
   const meta = document.createElement('div');
@@ -485,6 +515,7 @@ const updateChatFontSize = (size) => {
 };
 
 const hideSuggestions = () => {
+  suggestionInteractionStarted = true;
   document.querySelectorAll('.suggestions').forEach((element) => {
     element.style.display = 'none';
   });
@@ -590,42 +621,49 @@ chatOverlay?.addEventListener('click', (event) => {
   }
 });
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
+if (form) {
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-  const userMessage = input.value.trim();
-  if (!userMessage) {
-    return;
-  }
+    const userMessage = input?.value.trim() || '';
+    if (!userMessage) {
+      return;
+    }
 
-  sendChatMessage(userMessage);
-});
+    sendChatMessage(userMessage);
+  });
+}
 
 aiConsultButton?.addEventListener('click', handleConsultationClick);
 
-input.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter' && !event.shiftKey) {
-    event.preventDefault();
-    form.requestSubmit();
-  }
-});
+if (input) {
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      form?.requestSubmit();
+      return;
+    }
 
-input.addEventListener('input', () => {
-  autoResize(input);
-  const suggestions = document.querySelectorAll('.suggestions');
-  if (input.value && input.value.trim().length > 0) {
-    suggestions.forEach((el) => (el.style.display = 'none'));
-  } else {
-    suggestions.forEach((el) => (el.style.display = ''));
-  }
-});
+    if (['Backspace', 'Delete'].includes(event.key) || event.key.length === 1) {
+      suggestionInteractionStarted = true;
+      updateSuggestionVisibility();
+    }
+  });
+
+  input.addEventListener('input', () => {
+    autoResize(input);
+    updateSuggestionVisibility();
+  });
+}
 
 chatFontSlider?.addEventListener('input', (event) => {
   updateChatFontSize(event.target.value);
 });
 
 window.addEventListener('load', () => {
-  autoResize(input);
+  if (input) {
+    autoResize(input);
+  }
   hitungKredit();
   updateChatFontSize(chatFontSlider?.value || 11);
 });
@@ -656,7 +694,7 @@ function updateMessageText(messageElement, text) {
 
   const content = messageElement.querySelector('.message-content');
   if (content) {
-    content.textContent = text;
+    content.innerHTML = renderMessageContent(text);
   }
   const meta = messageElement.querySelector('.message-meta');
   if (meta) {
