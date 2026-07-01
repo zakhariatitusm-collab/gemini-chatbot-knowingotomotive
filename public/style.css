@@ -919,7 +919,12 @@ textarea {
 
 @media (max-width: 720px) {
   .page-shell {
-    padding: 20px 16px 32px;
+    padding: 24px 16px 32px;
+    padding-top: 100px;
+  }
+
+  .hero {
+    margin-top: 115px;
   }
 
   .topbar {
@@ -947,6 +952,13 @@ textarea {
     padding: 8px 12px;
     font-size: 0.75rem;
     z-index: 200;
+  }
+
+  #home,
+  #features,
+  #calculator,
+  #chat {
+    scroll-margin-top: 115px;
   }
 
   .hero {
@@ -1061,6 +1073,34 @@ textarea {
     max-height: 100vh;
     margin: 0 8px;
   }
+}
+
+.site-footer {
+  margin-top: 40px;
+  padding-top: 32px;
+  color: #94a3b8;
+}
+
+.site-footer .footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 16px;
+}
+
+.site-footer hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  opacity: 0.5;
+  margin: 0;
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 8px;
+  text-align: center;
 }
 
 @media (max-width: 520px) {

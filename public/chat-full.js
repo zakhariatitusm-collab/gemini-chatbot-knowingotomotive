@@ -133,7 +133,22 @@ chatInput?.addEventListener('input', () => {
   updateSuggestionVisibility();
 });
 
-clearChatBtn?.addEventListener('click', () => { conversationHistory = []; saveConversationHistory(); chatBox.innerHTML = ''; updateSuggestionVisibility(); });
+const getClearConfirmationText = () => {
+  const lang = (document.documentElement.lang || navigator.language || '').toLowerCase();
+  return lang.startsWith('id')
+    ? 'Apakah Anda yakin? seluruh percakapan akan dihapus.'
+    : 'Are you sure? all conversations will be deleted.';
+};
+
+clearChatBtn?.addEventListener('click', () => {
+  const confirmed = window.confirm(getClearConfirmationText());
+  if (!confirmed) return;
+
+  conversationHistory = [];
+  saveConversationHistory();
+  chatBox.innerHTML = '';
+  updateSuggestionVisibility();
+});
 
 chatFontSlider?.addEventListener('input', (event) => { updateChatFontSize(event.target.value); });
 
